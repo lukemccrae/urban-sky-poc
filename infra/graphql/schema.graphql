@@ -1,0 +1,61 @@
+type Query {
+  viewer: Viewer!
+}
+
+type Viewer {
+  id: ID!
+  username: String!
+  email: String!
+  balloons: [Balloon]!
+}
+
+type Balloon {
+  id: ID!
+  model: BalloonModels!
+  gasType: GasTypes!
+  envelopeType: EnvelopeTypes!
+  trackingPayloadId: Int! # Id of tracking system
+  cameraPayload: Int! # Id of camera system
+  sciencePayload: Int # Id of science payload
+  recoverySystem: RecoverySystems!
+  constructionPhase: ConstructionPhases!
+  constructionArea: ConstructionAreas!
+}
+
+enum BalloonModels {
+  LOW_ALTITUDE
+  MICROBALLOON
+  TRANSOSONDE
+}
+
+enum GasTypes {
+  HELIUM
+  HYDROGEN
+}
+
+enum EnvelopeTypes {
+  CHLOROPRENE
+  LATEX
+}
+
+enum RecoverySystems {
+  CUT_DOWN
+  PARACHUTE
+  SOFT_LANDING
+}
+
+enum ConstructionPhases {
+  ENVELOPE_MOLDING
+  PACKAGING
+  PAYLOAD_INTEGRATION
+  SEAM_SEALING
+  TESTING
+}
+
+enum ConstructionAreas {
+  BAY_1
+  BAY_2
+  BAY_3
+  BAY_4
+  BAY_5
+}
