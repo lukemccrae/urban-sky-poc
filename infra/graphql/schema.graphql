@@ -1,12 +1,13 @@
 type Query {
-  viewer: Viewer!
+  viewer(id: ID!): Viewer
+  balloons(ids: [ID!]): [Balloon!]
 }
 
 type Viewer {
   id: ID!
   username: String!
   email: String!
-  balloons: [Balloon]!
+  balloons(ids: [ID!]): [Balloon]!
 }
 
 type Balloon {
@@ -14,6 +15,7 @@ type Balloon {
   model: BalloonModels!
   gasType: GasTypes!
   envelopeType: EnvelopeTypes!
+  constructionLocation: ID!
   trackingPayloadId: Int! # Id of tracking system
   cameraPayload: Int! # Id of camera system
   sciencePayload: Int # Id of science payload

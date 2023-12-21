@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -19,6 +20,7 @@ export type Balloon = {
   __typename?: 'Balloon';
   cameraPayload: Scalars['Int']['output'];
   constructionArea: ConstructionAreas;
+  constructionLocation: Scalars['ID']['output'];
   constructionPhase: ConstructionPhases;
   envelopeType: EnvelopeTypes;
   gasType: GasTypes;
@@ -63,7 +65,18 @@ export enum GasTypes {
 
 export type Query = {
   __typename?: 'Query';
-  viewer: Viewer;
+  balloons?: Maybe<Array<Balloon>>;
+  viewer?: Maybe<Viewer>;
+};
+
+
+export type QueryBalloonsArgs = {
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+
+export type QueryViewerArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export enum RecoverySystems {
@@ -78,6 +91,11 @@ export type Viewer = {
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   username: Scalars['String']['output'];
+};
+
+
+export type ViewerBalloonsArgs = {
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 
@@ -180,6 +198,7 @@ export type ResolversParentTypes = {
 export type BalloonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Balloon'] = ResolversParentTypes['Balloon']> = {
   cameraPayload?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   constructionArea?: Resolver<ResolversTypes['ConstructionAreas'], ParentType, ContextType>;
+  constructionLocation?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   constructionPhase?: Resolver<ResolversTypes['ConstructionPhases'], ParentType, ContextType>;
   envelopeType?: Resolver<ResolversTypes['EnvelopeTypes'], ParentType, ContextType>;
   gasType?: Resolver<ResolversTypes['GasTypes'], ParentType, ContextType>;
@@ -192,11 +211,12 @@ export type BalloonResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  viewer?: Resolver<ResolversTypes['Viewer'], ParentType, ContextType>;
+  balloons?: Resolver<Maybe<Array<ResolversTypes['Balloon']>>, ParentType, ContextType, Partial<QueryBalloonsArgs>>;
+  viewer?: Resolver<Maybe<ResolversTypes['Viewer']>, ParentType, ContextType, RequireFields<QueryViewerArgs, 'id'>>;
 };
 
 export type ViewerResolvers<ContextType = any, ParentType extends ResolversParentTypes['Viewer'] = ResolversParentTypes['Viewer']> = {
-  balloons?: Resolver<Array<Maybe<ResolversTypes['Balloon']>>, ParentType, ContextType>;
+  balloons?: Resolver<Array<Maybe<ResolversTypes['Balloon']>>, ParentType, ContextType, Partial<ViewerBalloonsArgs>>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
