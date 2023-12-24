@@ -45,6 +45,18 @@ const resolvers: Resolvers = {
 };
 
 export const handler = async (event: Event, context: any): Promise<any> => {
+  if (event.info.parentTypeName === "Mutation") {
+    const allBalloons = mockBalloons;
+    allBalloons.push(event.arguments.balloon);
+    try {
+      return {
+        balloons: allBalloons,
+        success: true,
+      };
+    } catch (e) {
+      return { success: false };
+    }
+  }
   try {
     const parentTypeName = event.info.parentTypeName;
     const fieldName = event.info.fieldName;

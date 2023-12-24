@@ -64,6 +64,11 @@ export class UrbanskyPocStack extends cdk.Stack {
       fieldName: "balloons",
     });
 
+    queryDataSource.createResolver("addBalloon", {
+      typeName: "Mutation",
+      fieldName: "addBalloon",
+    });
+
     // The code that defines your stack goes here
 
     // example resource

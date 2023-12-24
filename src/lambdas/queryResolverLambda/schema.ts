@@ -1,5 +1,7 @@
+import { Balloon } from "./types";
+
 export interface Event {
-  arguments: { id: string };
+  arguments: { id: string; balloon: Balloon };
   identity: any;
   source: any;
   request: {

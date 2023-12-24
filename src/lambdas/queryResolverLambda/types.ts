@@ -16,6 +16,26 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddBalloon = {
+  cameraPayload: Scalars['Int']['input'];
+  constructionArea: ConstructionAreas;
+  constructionLocation: Scalars['ID']['input'];
+  constructionPhase: ConstructionPhases;
+  envelopeType: EnvelopeTypes;
+  gasType: GasTypes;
+  id: Scalars['ID']['input'];
+  model: BalloonModels;
+  recoverySystem: RecoverySystems;
+  sciencePayload?: InputMaybe<Scalars['Int']['input']>;
+  trackingPayloadId: Scalars['Int']['input'];
+};
+
+export type AddBalloonResult = {
+  __typename?: 'AddBalloonResult';
+  balloons?: Maybe<Array<Maybe<Balloon>>>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type Balloon = {
   __typename?: 'Balloon';
   cameraPayload: Scalars['Int']['output'];
@@ -62,6 +82,16 @@ export enum GasTypes {
   Helium = 'HELIUM',
   Hydrogen = 'HYDROGEN'
 }
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  addBalloon: AddBalloonResult;
+};
+
+
+export type MutationAddBalloonArgs = {
+  balloon: AddBalloon;
+};
 
 export type Query = {
   __typename?: 'Query';
@@ -169,6 +199,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AddBalloon: AddBalloon;
+  AddBalloonResult: ResolverTypeWrapper<AddBalloonResult>;
   Balloon: ResolverTypeWrapper<Balloon>;
   BalloonModels: BalloonModels;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -178,6 +210,7 @@ export type ResolversTypes = {
   GasTypes: GasTypes;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   RecoverySystems: RecoverySystems;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -186,13 +219,22 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AddBalloon: AddBalloon;
+  AddBalloonResult: AddBalloonResult;
   Balloon: Balloon;
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
   Viewer: Viewer;
+};
+
+export type AddBalloonResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddBalloonResult'] = ResolversParentTypes['AddBalloonResult']> = {
+  balloons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Balloon']>>>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type BalloonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Balloon'] = ResolversParentTypes['Balloon']> = {
@@ -210,6 +252,10 @@ export type BalloonResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addBalloon?: Resolver<ResolversTypes['AddBalloonResult'], ParentType, ContextType, RequireFields<MutationAddBalloonArgs, 'balloon'>>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   balloons?: Resolver<Maybe<Array<ResolversTypes['Balloon']>>, ParentType, ContextType, Partial<QueryBalloonsArgs>>;
   viewer?: Resolver<Maybe<ResolversTypes['Viewer']>, ParentType, ContextType, RequireFields<QueryViewerArgs, 'id'>>;
@@ -224,7 +270,9 @@ export type ViewerResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type Resolvers<ContextType = any> = {
+  AddBalloonResult?: AddBalloonResultResolvers<ContextType>;
   Balloon?: BalloonResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Viewer?: ViewerResolvers<ContextType>;
 };

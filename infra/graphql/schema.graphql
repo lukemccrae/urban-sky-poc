@@ -3,6 +3,29 @@ type Query {
   balloons(ids: [ID!]): [Balloon!]
 }
 
+type Mutation {
+  addBalloon(balloon: AddBalloon!): AddBalloonResult!
+}
+
+input AddBalloon {
+  id: ID!
+  model: BalloonModels!
+  gasType: GasTypes!
+  envelopeType: EnvelopeTypes!
+  constructionLocation: ID!
+  trackingPayloadId: Int! # Id of tracking system
+  cameraPayload: Int! # Id of camera system
+  sciencePayload: Int # Id of science payload
+  recoverySystem: RecoverySystems!
+  constructionPhase: ConstructionPhases!
+  constructionArea: ConstructionAreas!
+}
+
+type AddBalloonResult {
+  success: Boolean!
+  balloons: [Balloon]
+}
+
 type Viewer {
   id: ID!
   username: String!
